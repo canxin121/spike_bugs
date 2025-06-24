@@ -1,3 +1,4 @@
+```text
                              ....
               .',:clooo:  .:looooo:.
            .;looooooooc  .oooooooooo'
@@ -27,6 +28,4 @@
                                                Local IP (eth0): 172.17.60.175/20
                                                Battery (Microsoft Hyper-V Virtual Battery): 100% [AC Connected]
                                                Locale: C.UTF-8
-
-                                                                       
-                                                                       
+```
