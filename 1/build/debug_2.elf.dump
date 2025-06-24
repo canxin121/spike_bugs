@@ -1,0 +1,56 @@
+
+./build/debug_2.elf:     file format elf64-littleriscv
+
+
+Disassembly of section .text:
+
+0000000080002000 <exception_handler>:
+
+.section .text
+.globl _start
+
+exception_handler:
+    csrr t0, mepc
+    80002000:	341022f3          	csrr	t0,mepc
+    addi t0, t0, 4
+    80002004:	0291                	addi	t0,t0,4
+    csrw mepc, t0
+    80002006:	34129073          	csrw	mepc,t0
+    mret
+    8000200a:	30200073          	mret
+
+000000008000200e <_start>:
+
+_start:
+    la   t0, exception_handler
+    8000200e:	00000297          	auipc	t0,0x0
+    80002012:	ff228293          	addi	t0,t0,-14 # 80002000 <exception_handler>
+    csrw mtvec, t0
+    80002016:	30529073          	csrw	mtvec,t0
+
+    binvi x6, x21, 31
+    8000201a:	69fa9313          	binvi	t1,s5,0x1f
+    bclr x30, x6, x14
+    8000201e:	48e31f33          	bclr	t5,t1,a4
+    amoand.d.rl x28, x2, (x14)
+    80002022:	62273e2f          	amoand.d.rl	t3,sp,(a4)
+    max x4, x9, x30
+    80002026:	0be4e233          	max	tp,s1,t5
+    sh2add x1, x25, x6
+    8000202a:	206cc0b3          	sh2add	ra,s9,t1
+    amomaxu.w.rl x10, x4, (x1)
+    8000202e:	e240a52f          	amomaxu.w.rl	a0,tp,(ra)
+
+    li   t0, 1
+    80002032:	4285                	li	t0,1
+    la   t1, tohost
+    80002034:	ffffe317          	auipc	t1,0xffffe
+    80002038:	fcc30313          	addi	t1,t1,-52 # 80000000 <tohost>
+    sd   t0, 0(t1)
+    8000203c:	00533023          	sd	t0,0(t1)
+
+0000000080002040 <infinite_loop>:
+
+infinite_loop:
+    j infinite_loop
+    80002040:	a001                	j	80002040 <infinite_loop>
