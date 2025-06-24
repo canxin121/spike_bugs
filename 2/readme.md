@@ -4,6 +4,13 @@
 
 The Spike simulator, when executing the compressed instruction `c.ldsp`, fails to trigger the expected "Load access fault" for a memory address that has been proven to be invalid. This leads to incorrect program behavior, where the destination register is erroneously updated. This behavior is not only inconsistent with Spike's own exception handling for write operations to the same address but also contradicts the correct behavior of the Rocket simulator.
 
+## Reproduction Environment
+- **Spike commit**: 70687ccf41bb2696c55c6f6aa44b3949f2921ddf
+- **march**: rv64imafdqc_h_zaamo_zba_zbb_zbc_zbs_zfa_zfh_zfhmin_zicond_zicsr_zifencei
+- **system environment**: [environment](environment.md)
+
+## Bug Details
+
 ### **1. Correct Behavior**
 
 1.  **Baseline Test:** First, a series of `c.lwsp` and `c.swsp` instructions confirm that when the stack pointer `sp` is `0`, both Spike and Rocket correctly trigger access faults for invalid addresses (e.g., `0x20`, `0xC`).
