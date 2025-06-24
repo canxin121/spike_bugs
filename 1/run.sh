@@ -28,7 +28,7 @@ echo "Running debug_2.elf in debug mode with detailed commit log..."
 echo "c" | spike --isa=${ISA_STRING} -d --log-commits ./build/debug_2.elf > output/debug_2_debug.txt 2>&1
 
 echo "Running debug_1.elf with rocket..."
-emulators/rocket_emulator +verbose build/debug_1.elf > output/debug_1_rocket.txt 2>&1
+../emulators/rocket_emulator +verbose build/debug_1.elf > output/debug_1_rocket.txt 2>&1
 echo "Running debug_2.elf with rocket..."
-emulators/rocket_emulator +verbose build/debug_2.elf > output/debug_2_rocket.txt 2>&1
+../emulators/rocket_emulator +verbose build/debug_2.elf > output/debug_2_rocket.txt 2>&1
 
