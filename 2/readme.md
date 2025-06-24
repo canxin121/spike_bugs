@@ -62,3 +62,11 @@ export ROCKET_EMULATOR_PATH=<path_to_your_rocket_emulator>
 ```bash
 riscv_fuzz_test run -a ./debug.S -f common -b ./build
 ```
+
+# Result
+
+aswaterman: 
+
+"Not a bug, as the address actually is mapped. Spike contains a boot ROM at address 0x1000 - 0x2000. It being a ROM explains why the store raised an exception whereas the load did not."
+
+The explanation is very reasonable.
