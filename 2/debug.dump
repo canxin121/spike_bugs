@@ -1,0 +1,763 @@
+
+./debug.elf:     file format elf64-littleriscv
+
+
+Disassembly of section .text:
+
+0000000080002000 <exception_handler>:
+# ============================================================================
+# Exception Handler
+# ============================================================================
+exception_handler:
+    # Save registers once to avoid nesting
+    SAVE_T_REGS framework_temp_save_area
+    80002000:	340f9073          	csrw	mscratch,t6
+    80002004:	00002f97          	auipc	t6,0x2
+    80002008:	444f8f93          	addi	t6,t6,1092 # 80004448 <framework_temp_save_area>
+    8000200c:	005fb023          	sd	t0,0(t6)
+    80002010:	006fb423          	sd	t1,8(t6)
+    80002014:	007fb823          	sd	t2,16(t6)
+    80002018:	01cfbc23          	sd	t3,24(t6)
+    8000201c:	03dfb023          	sd	t4,32(t6)
+    80002020:	03efb423          	sd	t5,40(t6)
+    80002024:	34002f73          	csrr	t5,mscratch
+    80002028:	03efb823          	sd	t5,48(t6)
+    8000202c:	34002ff3          	csrr	t6,mscratch
+    
+    # Dump exception CSR information - use RAW version to avoid additional save/restore
+    DUMP_EXCEPTION_CSRS_RAW
+    80002030:	00002297          	auipc	t0,0x2
+    80002034:	3d028293          	addi	t0,t0,976 # 80004400 <exception_csr_dump_buffer>
+    80002038:	30002373          	csrr	t1,mstatus
+    8000203c:	0062b023          	sd	t1,0(t0)
+    80002040:	34202373          	csrr	t1,mcause
+    80002044:	0062b423          	sd	t1,8(t0)
+    80002048:	34102373          	csrr	t1,mepc
+    8000204c:	0062b823          	sd	t1,16(t0)
+    80002050:	34302373          	csrr	t1,mtval
+    80002054:	0062bc23          	sd	t1,24(t0)
+    80002058:	30402373          	csrr	t1,mie
+    8000205c:	0262b023          	sd	t1,32(t0)
+    80002060:	34402373          	csrr	t1,mip
+    80002064:	0262b423          	sd	t1,40(t0)
+    80002068:	30502373          	csrr	t1,mtvec
+    8000206c:	0262b823          	sd	t1,48(t0)
+    80002070:	34002373          	csrr	t1,mscratch
+    80002074:	0262bc23          	sd	t1,56(t0)
+    80002078:	f1402373          	csrr	t1,mhartid
+    8000207c:	0462b023          	sd	t1,64(t0)
+    80002080:	00001297          	auipc	t0,0x1
+    80002084:	f8028293          	addi	t0,t0,-128 # 80003000 <htif_communication_buffer>
+    80002088:	04000313          	li	t1,64
+    8000208c:	0062b023          	sd	t1,0(t0)
+    80002090:	4305                	li	t1,1
+    80002092:	0062b423          	sd	t1,8(t0)
+    80002096:	00001317          	auipc	t1,0x1
+    8000209a:	fc230313          	addi	t1,t1,-62 # 80003058 <exc_csr_dump_prefix>
+    8000209e:	0062b823          	sd	t1,16(t0)
+    800020a2:	4321                	li	t1,8
+    800020a4:	0062bc23          	sd	t1,24(t0)
+    800020a8:	0ff0000f          	fence
+    800020ac:	ffffe317          	auipc	t1,0xffffe
+    800020b0:	f5430313          	addi	t1,t1,-172 # 80000000 <tohost>
+    800020b4:	00533023          	sd	t0,0(t1)
+
+00000000800020b8 <wait_htif_print_2>:
+    800020b8:	ffffe397          	auipc	t2,0xffffe
+    800020bc:	f5038393          	addi	t2,t2,-176 # 80000008 <fromhost>
+    800020c0:	0003be03          	ld	t3,0(t2)
+    800020c4:	fe0e0ae3          	beqz	t3,800020b8 <wait_htif_print_2>
+    800020c8:	0003b023          	sd	zero,0(t2)
+    800020cc:	0ff0000f          	fence
+    800020d0:	00001297          	auipc	t0,0x1
+    800020d4:	f3028293          	addi	t0,t0,-208 # 80003000 <htif_communication_buffer>
+    800020d8:	04000313          	li	t1,64
+    800020dc:	0062b023          	sd	t1,0(t0)
+    800020e0:	4305                	li	t1,1
+    800020e2:	0062b423          	sd	t1,8(t0)
+    800020e6:	00002317          	auipc	t1,0x2
+    800020ea:	31a30313          	addi	t1,t1,794 # 80004400 <exception_csr_dump_buffer>
+    800020ee:	0062b823          	sd	t1,16(t0)
+    800020f2:	04800313          	li	t1,72
+    800020f6:	0062bc23          	sd	t1,24(t0)
+    800020fa:	0ff0000f          	fence
+    800020fe:	ffffe317          	auipc	t1,0xffffe
+    80002102:	f0230313          	addi	t1,t1,-254 # 80000000 <tohost>
+    80002106:	00533023          	sd	t0,0(t1)
+
+000000008000210a <wait_htif_print_3>:
+    8000210a:	ffffe397          	auipc	t2,0xffffe
+    8000210e:	efe38393          	addi	t2,t2,-258 # 80000008 <fromhost>
+    80002112:	0003be03          	ld	t3,0(t2)
+    80002116:	fe0e0ae3          	beqz	t3,8000210a <wait_htif_print_3>
+    8000211a:	0003b023          	sd	zero,0(t2)
+    8000211e:	0ff0000f          	fence
+    # Get exception instruction address
+    csrr t0, mepc
+    80002122:	341022f3          	csrr	t0,mepc
+    
+    # Read exception instruction content to determine length
+    lhu t1, 0(t0)
+    80002126:	0002d303          	lhu	t1,0(t0)
+    andi t2, t1, 0x3
+    8000212a:	00337393          	andi	t2,t1,3
+    li t3, 0x3
+    8000212e:	4e0d                	li	t3,3
+    bne t2, t3, compressed_inst
+    80002130:	01c39463          	bne	t2,t3,80002138 <compressed_inst>
+    
+    # Standard instruction (4 bytes)
+    addi t0, t0, 4
+    80002134:	0291                	addi	t0,t0,4
+    j update_mepc
+    80002136:	a011                	j	8000213a <update_mepc>
+
+0000000080002138 <compressed_inst>:
+    
+compressed_inst:
+    # Compressed instruction (2 bytes)
+    addi t0, t0, 2
+    80002138:	0289                	addi	t0,t0,2
+
+000000008000213a <update_mepc>:
+    
+update_mepc:
+    csrw mepc, t0
+    8000213a:	34129073          	csrw	mepc,t0
+    csrwi mcause, 0
+    8000213e:	34205073          	csrwi	mcause,0
+    csrwi mtval, 0
+    80002142:	34305073          	csrwi	mtval,0
+    csrwi mip, 0
+    80002146:	34405073          	csrwi	mip,0
+
+    # Restore registers once
+    RESTORE_T_REGS framework_temp_save_area
+    8000214a:	340f9073          	csrw	mscratch,t6
+    8000214e:	00002f97          	auipc	t6,0x2
+    80002152:	2faf8f93          	addi	t6,t6,762 # 80004448 <framework_temp_save_area>
+    80002156:	000fb283          	ld	t0,0(t6)
+    8000215a:	008fb303          	ld	t1,8(t6)
+    8000215e:	010fb383          	ld	t2,16(t6)
+    80002162:	018fbe03          	ld	t3,24(t6)
+    80002166:	020fbe83          	ld	t4,32(t6)
+    8000216a:	028fbf03          	ld	t5,40(t6)
+    8000216e:	030fbf83          	ld	t6,48(t6)
+    80002172:	34002ff3          	csrr	t6,mscratch
+    mret
+    80002176:	30200073          	mret
+
+000000008000217a <_start>:
+# Program Entry and Execution
+# ============================================================================
+_start:
+
+_init:
+    la t0, exception_handler
+    8000217a:	00000297          	auipc	t0,0x0
+    8000217e:	e8628293          	addi	t0,t0,-378 # 80002000 <exception_handler>
+    csrw mtvec, t0
+    80002182:	30529073          	csrw	mtvec,t0
+
+    RESET_MACHINE_STATE
+    80002186:	4281                	li	t0,0
+    80002188:	4301                	li	t1,0
+    8000218a:	30005073          	csrwi	mstatus,0
+    8000218e:	30405073          	csrwi	mie,0
+    80002192:	34405073          	csrwi	mip,0
+    80002196:	34105073          	csrwi	mepc,0
+    8000219a:	34205073          	csrwi	mcause,0
+    8000219e:	34305073          	csrwi	mtval,0
+    800021a2:	34005073          	csrwi	mscratch,0
+    800021a6:	30205073          	csrwi	medeleg,0
+    800021aa:	30305073          	csrwi	mideleg,0
+    800021ae:	30605073          	csrwi	mcounteren,0
+    800021b2:	10605073          	csrwi	scounteren,0
+    800021b6:	32005073          	csrwi	mcountinhibit,0
+    800021ba:	b0029073          	csrw	mcycle,t0
+    800021be:	b0229073          	csrw	minstret,t0
+    800021c2:	b0329073          	csrw	mhpmcounter3,t0
+    800021c6:	32329073          	csrw	mhpmevent3,t0
+    800021ca:	b0429073          	csrw	mhpmcounter4,t0
+    800021ce:	32429073          	csrw	mhpmevent4,t0
+    800021d2:	b0529073          	csrw	mhpmcounter5,t0
+    800021d6:	32529073          	csrw	mhpmevent5,t0
+    800021da:	b0629073          	csrw	mhpmcounter6,t0
+    800021de:	32629073          	csrw	mhpmevent6,t0
+    800021e2:	b0729073          	csrw	mhpmcounter7,t0
+    800021e6:	32729073          	csrw	mhpmevent7,t0
+    800021ea:	b0829073          	csrw	mhpmcounter8,t0
+    800021ee:	32829073          	csrw	mhpmevent8,t0
+    800021f2:	b0929073          	csrw	mhpmcounter9,t0
+    800021f6:	32929073          	csrw	mhpmevent9,t0
+    800021fa:	b0a29073          	csrw	mhpmcounter10,t0
+    800021fe:	32a29073          	csrw	mhpmevent10,t0
+    80002202:	b0b29073          	csrw	mhpmcounter11,t0
+    80002206:	32b29073          	csrw	mhpmevent11,t0
+    8000220a:	b0c29073          	csrw	mhpmcounter12,t0
+    8000220e:	32c29073          	csrw	mhpmevent12,t0
+    80002212:	b0d29073          	csrw	mhpmcounter13,t0
+    80002216:	32d29073          	csrw	mhpmevent13,t0
+    8000221a:	b0e29073          	csrw	mhpmcounter14,t0
+    8000221e:	32e29073          	csrw	mhpmevent14,t0
+    80002222:	b0f29073          	csrw	mhpmcounter15,t0
+    80002226:	32f29073          	csrw	mhpmevent15,t0
+    8000222a:	b1029073          	csrw	mhpmcounter16,t0
+    8000222e:	33029073          	csrw	mhpmevent16,t0
+    80002232:	b1129073          	csrw	mhpmcounter17,t0
+    80002236:	33129073          	csrw	mhpmevent17,t0
+    8000223a:	b1229073          	csrw	mhpmcounter18,t0
+    8000223e:	33229073          	csrw	mhpmevent18,t0
+    80002242:	b1329073          	csrw	mhpmcounter19,t0
+    80002246:	33329073          	csrw	mhpmevent19,t0
+    8000224a:	b1429073          	csrw	mhpmcounter20,t0
+    8000224e:	33429073          	csrw	mhpmevent20,t0
+    80002252:	b1529073          	csrw	mhpmcounter21,t0
+    80002256:	33529073          	csrw	mhpmevent21,t0
+    8000225a:	b1629073          	csrw	mhpmcounter22,t0
+    8000225e:	33629073          	csrw	mhpmevent22,t0
+    80002262:	b1729073          	csrw	mhpmcounter23,t0
+    80002266:	33729073          	csrw	mhpmevent23,t0
+    8000226a:	b1829073          	csrw	mhpmcounter24,t0
+    8000226e:	33829073          	csrw	mhpmevent24,t0
+    80002272:	b1929073          	csrw	mhpmcounter25,t0
+    80002276:	33929073          	csrw	mhpmevent25,t0
+    8000227a:	b1a29073          	csrw	mhpmcounter26,t0
+    8000227e:	33a29073          	csrw	mhpmevent26,t0
+    80002282:	b1b29073          	csrw	mhpmcounter27,t0
+    80002286:	33b29073          	csrw	mhpmevent27,t0
+    8000228a:	b1c29073          	csrw	mhpmcounter28,t0
+    8000228e:	33c29073          	csrw	mhpmevent28,t0
+    80002292:	b1d29073          	csrw	mhpmcounter29,t0
+    80002296:	33d29073          	csrw	mhpmevent29,t0
+    8000229a:	b1e29073          	csrw	mhpmcounter30,t0
+    8000229e:	33e29073          	csrw	mhpmevent30,t0
+    800022a2:	b1f29073          	csrw	mhpmcounter31,t0
+    800022a6:	33f29073          	csrw	mhpmevent31,t0
+    800022aa:	7a005073          	csrwi	tselect,0
+    800022ae:	7a105073          	csrwi	tdata1,0
+    800022b2:	7a205073          	csrwi	tdata2,0
+    800022b6:	7a00d073          	csrwi	tselect,1
+    800022ba:	7a105073          	csrwi	tdata1,0
+    800022be:	7a205073          	csrwi	tdata2,0
+    800022c2:	7a005073          	csrwi	tselect,0
+    800022c6:	10005073          	csrwi	sstatus,0
+    800022ca:	10405073          	csrwi	sie,0
+    800022ce:	14405073          	csrwi	sip,0
+    800022d2:	14105073          	csrwi	sepc,0
+    800022d6:	14205073          	csrwi	scause,0
+    800022da:	14305073          	csrwi	stval,0
+    800022de:	14005073          	csrwi	sscratch,0
+    800022e2:	10505073          	csrwi	stvec,0
+    800022e6:	18005073          	csrwi	satp,0
+    800022ea:	300022f3          	csrr	t0,mstatus
+    800022ee:	6309                	lui	t1,0x2
+    800022f0:	0062e2b3          	or	t0,t0,t1
+    800022f4:	30029073          	csrw	mstatus,t0
+    800022f8:	00305073          	csrwi	fcsr,0
+    800022fc:	f2000053          	fmv.d.x	ft0,zero
+    80002300:	f20000d3          	fmv.d.x	ft1,zero
+    80002304:	f2000153          	fmv.d.x	ft2,zero
+    80002308:	f20001d3          	fmv.d.x	ft3,zero
+    8000230c:	f2000253          	fmv.d.x	ft4,zero
+    80002310:	f20002d3          	fmv.d.x	ft5,zero
+    80002314:	f2000353          	fmv.d.x	ft6,zero
+    80002318:	f20003d3          	fmv.d.x	ft7,zero
+    8000231c:	f2000453          	fmv.d.x	fs0,zero
+    80002320:	f20004d3          	fmv.d.x	fs1,zero
+    80002324:	f2000553          	fmv.d.x	fa0,zero
+    80002328:	f20005d3          	fmv.d.x	fa1,zero
+    8000232c:	f2000653          	fmv.d.x	fa2,zero
+    80002330:	f20006d3          	fmv.d.x	fa3,zero
+    80002334:	f2000753          	fmv.d.x	fa4,zero
+    80002338:	f20007d3          	fmv.d.x	fa5,zero
+    8000233c:	f2000853          	fmv.d.x	fa6,zero
+    80002340:	f20008d3          	fmv.d.x	fa7,zero
+    80002344:	f2000953          	fmv.d.x	fs2,zero
+    80002348:	f20009d3          	fmv.d.x	fs3,zero
+    8000234c:	f2000a53          	fmv.d.x	fs4,zero
+    80002350:	f2000ad3          	fmv.d.x	fs5,zero
+    80002354:	f2000b53          	fmv.d.x	fs6,zero
+    80002358:	f2000bd3          	fmv.d.x	fs7,zero
+    8000235c:	f2000c53          	fmv.d.x	fs8,zero
+    80002360:	f2000cd3          	fmv.d.x	fs9,zero
+    80002364:	f2000d53          	fmv.d.x	fs10,zero
+    80002368:	f2000dd3          	fmv.d.x	fs11,zero
+    8000236c:	f2000e53          	fmv.d.x	ft8,zero
+    80002370:	f2000ed3          	fmv.d.x	ft9,zero
+    80002374:	f2000f53          	fmv.d.x	ft10,zero
+    80002378:	f2000fd3          	fmv.d.x	ft11,zero
+    8000237c:	60005073          	csrwi	hstatus,0
+    80002380:	60205073          	csrwi	hedeleg,0
+    80002384:	60305073          	csrwi	hideleg,0
+    80002388:	60405073          	csrwi	hie,0
+    8000238c:	64405073          	csrwi	hip,0
+    80002390:	60705073          	csrwi	hgeie,0
+    80002394:	64305073          	csrwi	htval,0
+    80002398:	64a05073          	csrwi	htinst,0
+    8000239c:	68005073          	csrwi	hgatp,0
+    800023a0:	60605073          	csrwi	hcounteren,0
+    800023a4:	4281                	li	t0,0
+    800023a6:	20005073          	csrwi	vsstatus,0
+    800023aa:	20405073          	csrwi	vsie,0
+    800023ae:	24405073          	csrwi	vsip,0
+    800023b2:	20505073          	csrwi	vstvec,0
+    800023b6:	24005073          	csrwi	vsscratch,0
+    800023ba:	24105073          	csrwi	vsepc,0
+    800023be:	24205073          	csrwi	vscause,0
+    800023c2:	24305073          	csrwi	vstval,0
+    800023c6:	28005073          	csrwi	vsatp,0
+    800023ca:	00000093          	li	ra,0
+    800023ce:	00000113          	li	sp,0
+    800023d2:	00000193          	li	gp,0
+    800023d6:	00000213          	li	tp,0
+    800023da:	00000293          	li	t0,0
+    800023de:	00000313          	li	t1,0
+    800023e2:	00000393          	li	t2,0
+    800023e6:	00000413          	li	s0,0
+    800023ea:	00000493          	li	s1,0
+    800023ee:	00000513          	li	a0,0
+    800023f2:	00000593          	li	a1,0
+    800023f6:	00000613          	li	a2,0
+    800023fa:	00000693          	li	a3,0
+    800023fe:	00000713          	li	a4,0
+    80002402:	00000793          	li	a5,0
+    80002406:	00000813          	li	a6,0
+    8000240a:	00000893          	li	a7,0
+    8000240e:	00000913          	li	s2,0
+    80002412:	00000993          	li	s3,0
+    80002416:	00000a13          	li	s4,0
+    8000241a:	00000a93          	li	s5,0
+    8000241e:	00000b13          	li	s6,0
+    80002422:	00000b93          	li	s7,0
+    80002426:	00000c13          	li	s8,0
+    8000242a:	00000c93          	li	s9,0
+    8000242e:	00000d13          	li	s10,0
+    80002432:	00000d93          	li	s11,0
+    80002436:	00000e13          	li	t3,0
+    8000243a:	00000e93          	li	t4,0
+    8000243e:	00000f13          	li	t5,0
+    80002442:	00000f93          	li	t6,0
+
+0000000080002446 <_user_code>:
+
+_user_code:
+    li sp, 0 
+    80002446:	4101                	li	sp,0
+    # 作为对比，spike和rocket在以下指令表现一致：都触发相同的访问异常
+    c.lwsp x21, 32(sp) # spike + rocket 相同: 触发Load access fault异常 (mcause=5, mtval=0x20)
+    80002448:	5a82                	lw	s5,32(sp)
+                        # 原因：sp=0(零寄存器)，访问地址0x20无效
+    c.lwsp x5, 12(sp)  # spike + rocket 相同: 触发Load access fault异常 (mcause=5, mtval=0xC) 
+    8000244a:	42b2                	lw	t0,12(sp)
+                        # 原因：sp=0，访问地址0xC无效
+    c.swsp x14, 28(sp) # spike + rocket 相同: 触发Store/AMO access fault异常 (mcause=7, mtval=0x1C)
+    8000244c:	ce3a                	sw	a4,28(sp)
+                        # 原因：sp=0，访问地址0x1C无效
+    c.sdsp x19, 0(sp)  # spike + rocket 相同: 触发Store/AMO access fault异常 (mcause=7, mtval=0x0)
+    8000244e:	e04e                	sd	s3,0(sp)
+                        # 原因：sp=0，访问地址0x0无效
+        
+    li x2, 0x1E28      # 设置有效的栈指针值
+    80002450:	00002137          	lui	sp,0x2
+    80002454:	e281011b          	addiw	sp,sp,-472 # 1e28 <DUMP_SIZE_WITH_FP+0x1b90>
+    
+    li t1, 0x12345678
+    80002458:	12345337          	lui	t1,0x12345
+    8000245c:	6783031b          	addiw	t1,t1,1656 # 12345678 <DUMP_SIZE_WITH_FP+0x123453e0>
+    c.swsp t1, 48(sp) # spike + rocket 相同: 触发Store/AMO access fault异常 (mcause=7, mtval=0x1E58)
+    80002460:	d81a                	sw	t1,48(sp)
+                        # 原因：sp=0x1E28，访问地址0x1E58，但该地址未映射或无写权限
+    
+    DUMP_ALL_REGS framework_temp_save_area 
+    80002462:	340f9073          	csrw	mscratch,t6
+    80002466:	00002f97          	auipc	t6,0x2
+    8000246a:	fe2f8f93          	addi	t6,t6,-30 # 80004448 <framework_temp_save_area>
+    8000246e:	005fb023          	sd	t0,0(t6)
+    80002472:	006fb423          	sd	t1,8(t6)
+    80002476:	007fb823          	sd	t2,16(t6)
+    8000247a:	01cfbc23          	sd	t3,24(t6)
+    8000247e:	03dfb023          	sd	t4,32(t6)
+    80002482:	03efb423          	sd	t5,40(t6)
+    80002486:	34002f73          	csrr	t5,mscratch
+    8000248a:	03efb823          	sd	t5,48(t6)
+    8000248e:	34002ff3          	csrr	t6,mscratch
+    80002492:	340f9073          	csrw	mscratch,t6
+    80002496:	00002f97          	auipc	t6,0x2
+    8000249a:	b6af8f93          	addi	t6,t6,-1174 # 80004000 <register_dump_buffer>
+    8000249e:	000fb023          	sd	zero,0(t6)
+    800024a2:	001fb423          	sd	ra,8(t6)
+    800024a6:	002fb823          	sd	sp,16(t6)
+    800024aa:	003fbc23          	sd	gp,24(t6)
+    800024ae:	024fb023          	sd	tp,32(t6)
+    800024b2:	025fb423          	sd	t0,40(t6)
+    800024b6:	026fb823          	sd	t1,48(t6)
+    800024ba:	027fbc23          	sd	t2,56(t6)
+    800024be:	048fb023          	sd	s0,64(t6)
+    800024c2:	049fb423          	sd	s1,72(t6)
+    800024c6:	04afb823          	sd	a0,80(t6)
+    800024ca:	04bfbc23          	sd	a1,88(t6)
+    800024ce:	06cfb023          	sd	a2,96(t6)
+    800024d2:	06dfb423          	sd	a3,104(t6)
+    800024d6:	06efb823          	sd	a4,112(t6)
+    800024da:	06ffbc23          	sd	a5,120(t6)
+    800024de:	090fb023          	sd	a6,128(t6)
+    800024e2:	091fb423          	sd	a7,136(t6)
+    800024e6:	092fb823          	sd	s2,144(t6)
+    800024ea:	093fbc23          	sd	s3,152(t6)
+    800024ee:	0b4fb023          	sd	s4,160(t6)
+    800024f2:	0b5fb423          	sd	s5,168(t6)
+    800024f6:	0b6fb823          	sd	s6,176(t6)
+    800024fa:	0b7fbc23          	sd	s7,184(t6)
+    800024fe:	0d8fb023          	sd	s8,192(t6)
+    80002502:	0d9fb423          	sd	s9,200(t6)
+    80002506:	0dafb823          	sd	s10,208(t6)
+    8000250a:	0dbfbc23          	sd	s11,216(t6)
+    8000250e:	0fcfb023          	sd	t3,224(t6)
+    80002512:	0fdfb423          	sd	t4,232(t6)
+    80002516:	0fefb823          	sd	t5,240(t6)
+    8000251a:	34002f73          	csrr	t5,mscratch
+    8000251e:	0fefbc23          	sd	t5,248(t6)
+    80002522:	300022f3          	csrr	t0,mstatus
+    80002526:	105fb023          	sd	t0,256(t6)
+    8000252a:	301022f3          	csrr	t0,misa
+    8000252e:	105fb423          	sd	t0,264(t6)
+    80002532:	302022f3          	csrr	t0,medeleg
+    80002536:	105fb823          	sd	t0,272(t6)
+    8000253a:	303022f3          	csrr	t0,mideleg
+    8000253e:	105fbc23          	sd	t0,280(t6)
+    80002542:	304022f3          	csrr	t0,mie
+    80002546:	125fb023          	sd	t0,288(t6)
+    8000254a:	305022f3          	csrr	t0,mtvec
+    8000254e:	125fb423          	sd	t0,296(t6)
+    80002552:	306022f3          	csrr	t0,mcounteren
+    80002556:	125fb823          	sd	t0,304(t6)
+    8000255a:	340022f3          	csrr	t0,mscratch
+    8000255e:	125fbc23          	sd	t0,312(t6)
+    80002562:	341022f3          	csrr	t0,mepc
+    80002566:	145fb023          	sd	t0,320(t6)
+    8000256a:	342022f3          	csrr	t0,mcause
+    8000256e:	145fb423          	sd	t0,328(t6)
+    80002572:	343022f3          	csrr	t0,mtval
+    80002576:	145fb823          	sd	t0,336(t6)
+    8000257a:	344022f3          	csrr	t0,mip
+    8000257e:	145fbc23          	sd	t0,344(t6)
+    80002582:	b00022f3          	csrr	t0,mcycle
+    80002586:	165fb023          	sd	t0,352(t6)
+    8000258a:	b02022f3          	csrr	t0,minstret
+    8000258e:	165fb423          	sd	t0,360(t6)
+    80002592:	f11022f3          	csrr	t0,mvendorid
+    80002596:	165fb823          	sd	t0,368(t6)
+    8000259a:	f12022f3          	csrr	t0,marchid
+    8000259e:	165fbc23          	sd	t0,376(t6)
+    800025a2:	f13022f3          	csrr	t0,mimpid
+    800025a6:	185fb023          	sd	t0,384(t6)
+    800025aa:	f14022f3          	csrr	t0,mhartid
+    800025ae:	185fb423          	sd	t0,392(t6)
+    800025b2:	300022f3          	csrr	t0,mstatus
+    800025b6:	6309                	lui	t1,0x2
+    800025b8:	0062e333          	or	t1,t0,t1
+    800025bc:	30031073          	csrw	mstatus,t1
+    800025c0:	00302373          	frcsr	t1
+    800025c4:	186fb823          	sd	t1,400(t6)
+    800025c8:	180fbc27          	fsd	ft0,408(t6)
+    800025cc:	1a1fb027          	fsd	ft1,416(t6)
+    800025d0:	1a2fb427          	fsd	ft2,424(t6)
+    800025d4:	1a3fb827          	fsd	ft3,432(t6)
+    800025d8:	1a4fbc27          	fsd	ft4,440(t6)
+    800025dc:	1c5fb027          	fsd	ft5,448(t6)
+    800025e0:	1c6fb427          	fsd	ft6,456(t6)
+    800025e4:	1c7fb827          	fsd	ft7,464(t6)
+    800025e8:	1c8fbc27          	fsd	fs0,472(t6)
+    800025ec:	1e9fb027          	fsd	fs1,480(t6)
+    800025f0:	1eafb427          	fsd	fa0,488(t6)
+    800025f4:	1ebfb827          	fsd	fa1,496(t6)
+    800025f8:	1ecfbc27          	fsd	fa2,504(t6)
+    800025fc:	20dfb027          	fsd	fa3,512(t6)
+    80002600:	20efb427          	fsd	fa4,520(t6)
+    80002604:	20ffb827          	fsd	fa5,528(t6)
+    80002608:	210fbc27          	fsd	fa6,536(t6)
+    8000260c:	231fb027          	fsd	fa7,544(t6)
+    80002610:	232fb427          	fsd	fs2,552(t6)
+    80002614:	233fb827          	fsd	fs3,560(t6)
+    80002618:	234fbc27          	fsd	fs4,568(t6)
+    8000261c:	255fb027          	fsd	fs5,576(t6)
+    80002620:	256fb427          	fsd	fs6,584(t6)
+    80002624:	257fb827          	fsd	fs7,592(t6)
+    80002628:	258fbc27          	fsd	fs8,600(t6)
+    8000262c:	279fb027          	fsd	fs9,608(t6)
+    80002630:	27afb427          	fsd	fs10,616(t6)
+    80002634:	27bfb827          	fsd	fs11,624(t6)
+    80002638:	27cfbc27          	fsd	ft8,632(t6)
+    8000263c:	29dfb027          	fsd	ft9,640(t6)
+    80002640:	29efb427          	fsd	ft10,648(t6)
+    80002644:	29ffb827          	fsd	ft11,656(t6)
+    80002648:	30029073          	csrw	mstatus,t0
+    8000264c:	00001297          	auipc	t0,0x1
+    80002650:	9b428293          	addi	t0,t0,-1612 # 80003000 <htif_communication_buffer>
+    80002654:	04000313          	li	t1,64
+    80002658:	0062b023          	sd	t1,0(t0)
+    8000265c:	4305                	li	t1,1
+    8000265e:	0062b423          	sd	t1,8(t0)
+    80002662:	00001317          	auipc	t1,0x1
+    80002666:	9de30313          	addi	t1,t1,-1570 # 80003040 <full_reg_dump_prefix_with_fp>
+    8000266a:	0062b823          	sd	t1,16(t0)
+    8000266e:	4321                	li	t1,8
+    80002670:	0062bc23          	sd	t1,24(t0)
+    80002674:	0ff0000f          	fence
+    80002678:	ffffe317          	auipc	t1,0xffffe
+    8000267c:	98830313          	addi	t1,t1,-1656 # 80000000 <tohost>
+    80002680:	00533023          	sd	t0,0(t1)
+
+0000000080002684 <wait_htif_print_9>:
+    80002684:	ffffe397          	auipc	t2,0xffffe
+    80002688:	98438393          	addi	t2,t2,-1660 # 80000008 <fromhost>
+    8000268c:	0003be03          	ld	t3,0(t2)
+    80002690:	fe0e0ae3          	beqz	t3,80002684 <wait_htif_print_9>
+    80002694:	0003b023          	sd	zero,0(t2)
+    80002698:	0ff0000f          	fence
+    8000269c:	00001297          	auipc	t0,0x1
+    800026a0:	96428293          	addi	t0,t0,-1692 # 80003000 <htif_communication_buffer>
+    800026a4:	04000313          	li	t1,64
+    800026a8:	0062b023          	sd	t1,0(t0)
+    800026ac:	4305                	li	t1,1
+    800026ae:	0062b423          	sd	t1,8(t0)
+    800026b2:	00002317          	auipc	t1,0x2
+    800026b6:	94e30313          	addi	t1,t1,-1714 # 80004000 <register_dump_buffer>
+    800026ba:	0062b823          	sd	t1,16(t0)
+    800026be:	29800313          	li	t1,664
+    800026c2:	0062bc23          	sd	t1,24(t0)
+    800026c6:	0ff0000f          	fence
+    800026ca:	ffffe317          	auipc	t1,0xffffe
+    800026ce:	93630313          	addi	t1,t1,-1738 # 80000000 <tohost>
+    800026d2:	00533023          	sd	t0,0(t1)
+
+00000000800026d6 <wait_htif_print_10>:
+    800026d6:	ffffe397          	auipc	t2,0xffffe
+    800026da:	93238393          	addi	t2,t2,-1742 # 80000008 <fromhost>
+    800026de:	0003be03          	ld	t3,0(t2)
+    800026e2:	fe0e0ae3          	beqz	t3,800026d6 <wait_htif_print_10>
+    800026e6:	0003b023          	sd	zero,0(t2)
+    800026ea:	0ff0000f          	fence
+    800026ee:	34001073          	csrw	mscratch,zero
+    800026f2:	340f9073          	csrw	mscratch,t6
+    800026f6:	00002f97          	auipc	t6,0x2
+    800026fa:	d52f8f93          	addi	t6,t6,-686 # 80004448 <framework_temp_save_area>
+    800026fe:	000fb283          	ld	t0,0(t6)
+    80002702:	008fb303          	ld	t1,8(t6)
+    80002706:	010fb383          	ld	t2,16(t6)
+    8000270a:	018fbe03          	ld	t3,24(t6)
+    8000270e:	020fbe83          	ld	t4,32(t6)
+    80002712:	028fbf03          	ld	t5,40(t6)
+    80002716:	030fbf83          	ld	t6,48(t6)
+    8000271a:	34002ff3          	csrr	t6,mscratch
+    # 第一次寄存器转储结果 - spike和rocket完全一致:
+    # x20(s4)=0x0, x21(s5)=0x0, x6(t1)=0x12345678, x2(sp)=0x1E28
+    # 两个模拟器在此时状态完全一致
+    
+    li x20, 0xDEADBEEF # 设置x20为测试值
+    8000271e:	00038a37          	lui	s4,0x38
+    80002722:	ab7a0a1b          	addiw	s4,s4,-1353 # 37ab7 <DUMP_SIZE_WITH_FP+0x3781f>
+    80002726:	0a3a                	slli	s4,s4,0xe
+    80002728:	eefa0a13          	addi	s4,s4,-273
+    
+    c.ldsp x20, 48(sp) 
+    8000272c:	7a42                	ld	s4,48(sp)
+    # spike: 未触发异常，成功从地址0x1E58读取数据(读到0x0)，x20被更新为0x0
+    # rocket: 触发Load access fault异常 (mcause=5, mtval=0x1E58)，x20保持0xDEADBEEF不变
+    
+    DUMP_ALL_REGS framework_temp_save_area
+    8000272e:	340f9073          	csrw	mscratch,t6
+    80002732:	00002f97          	auipc	t6,0x2
+    80002736:	d16f8f93          	addi	t6,t6,-746 # 80004448 <framework_temp_save_area>
+    8000273a:	005fb023          	sd	t0,0(t6)
+    8000273e:	006fb423          	sd	t1,8(t6)
+    80002742:	007fb823          	sd	t2,16(t6)
+    80002746:	01cfbc23          	sd	t3,24(t6)
+    8000274a:	03dfb023          	sd	t4,32(t6)
+    8000274e:	03efb423          	sd	t5,40(t6)
+    80002752:	34002f73          	csrr	t5,mscratch
+    80002756:	03efb823          	sd	t5,48(t6)
+    8000275a:	34002ff3          	csrr	t6,mscratch
+    8000275e:	340f9073          	csrw	mscratch,t6
+    80002762:	00002f97          	auipc	t6,0x2
+    80002766:	89ef8f93          	addi	t6,t6,-1890 # 80004000 <register_dump_buffer>
+    8000276a:	000fb023          	sd	zero,0(t6)
+    8000276e:	001fb423          	sd	ra,8(t6)
+    80002772:	002fb823          	sd	sp,16(t6)
+    80002776:	003fbc23          	sd	gp,24(t6)
+    8000277a:	024fb023          	sd	tp,32(t6)
+    8000277e:	025fb423          	sd	t0,40(t6)
+    80002782:	026fb823          	sd	t1,48(t6)
+    80002786:	027fbc23          	sd	t2,56(t6)
+    8000278a:	048fb023          	sd	s0,64(t6)
+    8000278e:	049fb423          	sd	s1,72(t6)
+    80002792:	04afb823          	sd	a0,80(t6)
+    80002796:	04bfbc23          	sd	a1,88(t6)
+    8000279a:	06cfb023          	sd	a2,96(t6)
+    8000279e:	06dfb423          	sd	a3,104(t6)
+    800027a2:	06efb823          	sd	a4,112(t6)
+    800027a6:	06ffbc23          	sd	a5,120(t6)
+    800027aa:	090fb023          	sd	a6,128(t6)
+    800027ae:	091fb423          	sd	a7,136(t6)
+    800027b2:	092fb823          	sd	s2,144(t6)
+    800027b6:	093fbc23          	sd	s3,152(t6)
+    800027ba:	0b4fb023          	sd	s4,160(t6)
+    800027be:	0b5fb423          	sd	s5,168(t6)
+    800027c2:	0b6fb823          	sd	s6,176(t6)
+    800027c6:	0b7fbc23          	sd	s7,184(t6)
+    800027ca:	0d8fb023          	sd	s8,192(t6)
+    800027ce:	0d9fb423          	sd	s9,200(t6)
+    800027d2:	0dafb823          	sd	s10,208(t6)
+    800027d6:	0dbfbc23          	sd	s11,216(t6)
+    800027da:	0fcfb023          	sd	t3,224(t6)
+    800027de:	0fdfb423          	sd	t4,232(t6)
+    800027e2:	0fefb823          	sd	t5,240(t6)
+    800027e6:	34002f73          	csrr	t5,mscratch
+    800027ea:	0fefbc23          	sd	t5,248(t6)
+    800027ee:	300022f3          	csrr	t0,mstatus
+    800027f2:	105fb023          	sd	t0,256(t6)
+    800027f6:	301022f3          	csrr	t0,misa
+    800027fa:	105fb423          	sd	t0,264(t6)
+    800027fe:	302022f3          	csrr	t0,medeleg
+    80002802:	105fb823          	sd	t0,272(t6)
+    80002806:	303022f3          	csrr	t0,mideleg
+    8000280a:	105fbc23          	sd	t0,280(t6)
+    8000280e:	304022f3          	csrr	t0,mie
+    80002812:	125fb023          	sd	t0,288(t6)
+    80002816:	305022f3          	csrr	t0,mtvec
+    8000281a:	125fb423          	sd	t0,296(t6)
+    8000281e:	306022f3          	csrr	t0,mcounteren
+    80002822:	125fb823          	sd	t0,304(t6)
+    80002826:	340022f3          	csrr	t0,mscratch
+    8000282a:	125fbc23          	sd	t0,312(t6)
+    8000282e:	341022f3          	csrr	t0,mepc
+    80002832:	145fb023          	sd	t0,320(t6)
+    80002836:	342022f3          	csrr	t0,mcause
+    8000283a:	145fb423          	sd	t0,328(t6)
+    8000283e:	343022f3          	csrr	t0,mtval
+    80002842:	145fb823          	sd	t0,336(t6)
+    80002846:	344022f3          	csrr	t0,mip
+    8000284a:	145fbc23          	sd	t0,344(t6)
+    8000284e:	b00022f3          	csrr	t0,mcycle
+    80002852:	165fb023          	sd	t0,352(t6)
+    80002856:	b02022f3          	csrr	t0,minstret
+    8000285a:	165fb423          	sd	t0,360(t6)
+    8000285e:	f11022f3          	csrr	t0,mvendorid
+    80002862:	165fb823          	sd	t0,368(t6)
+    80002866:	f12022f3          	csrr	t0,marchid
+    8000286a:	165fbc23          	sd	t0,376(t6)
+    8000286e:	f13022f3          	csrr	t0,mimpid
+    80002872:	185fb023          	sd	t0,384(t6)
+    80002876:	f14022f3          	csrr	t0,mhartid
+    8000287a:	185fb423          	sd	t0,392(t6)
+    8000287e:	300022f3          	csrr	t0,mstatus
+    80002882:	6309                	lui	t1,0x2
+    80002884:	0062e333          	or	t1,t0,t1
+    80002888:	30031073          	csrw	mstatus,t1
+    8000288c:	00302373          	frcsr	t1
+    80002890:	186fb823          	sd	t1,400(t6)
+    80002894:	180fbc27          	fsd	ft0,408(t6)
+    80002898:	1a1fb027          	fsd	ft1,416(t6)
+    8000289c:	1a2fb427          	fsd	ft2,424(t6)
+    800028a0:	1a3fb827          	fsd	ft3,432(t6)
+    800028a4:	1a4fbc27          	fsd	ft4,440(t6)
+    800028a8:	1c5fb027          	fsd	ft5,448(t6)
+    800028ac:	1c6fb427          	fsd	ft6,456(t6)
+    800028b0:	1c7fb827          	fsd	ft7,464(t6)
+    800028b4:	1c8fbc27          	fsd	fs0,472(t6)
+    800028b8:	1e9fb027          	fsd	fs1,480(t6)
+    800028bc:	1eafb427          	fsd	fa0,488(t6)
+    800028c0:	1ebfb827          	fsd	fa1,496(t6)
+    800028c4:	1ecfbc27          	fsd	fa2,504(t6)
+    800028c8:	20dfb027          	fsd	fa3,512(t6)
+    800028cc:	20efb427          	fsd	fa4,520(t6)
+    800028d0:	20ffb827          	fsd	fa5,528(t6)
+    800028d4:	210fbc27          	fsd	fa6,536(t6)
+    800028d8:	231fb027          	fsd	fa7,544(t6)
+    800028dc:	232fb427          	fsd	fs2,552(t6)
+    800028e0:	233fb827          	fsd	fs3,560(t6)
+    800028e4:	234fbc27          	fsd	fs4,568(t6)
+    800028e8:	255fb027          	fsd	fs5,576(t6)
+    800028ec:	256fb427          	fsd	fs6,584(t6)
+    800028f0:	257fb827          	fsd	fs7,592(t6)
+    800028f4:	258fbc27          	fsd	fs8,600(t6)
+    800028f8:	279fb027          	fsd	fs9,608(t6)
+    800028fc:	27afb427          	fsd	fs10,616(t6)
+    80002900:	27bfb827          	fsd	fs11,624(t6)
+    80002904:	27cfbc27          	fsd	ft8,632(t6)
+    80002908:	29dfb027          	fsd	ft9,640(t6)
+    8000290c:	29efb427          	fsd	ft10,648(t6)
+    80002910:	29ffb827          	fsd	ft11,656(t6)
+    80002914:	30029073          	csrw	mstatus,t0
+    80002918:	00000297          	auipc	t0,0x0
+    8000291c:	6e828293          	addi	t0,t0,1768 # 80003000 <htif_communication_buffer>
+    80002920:	04000313          	li	t1,64
+    80002924:	0062b023          	sd	t1,0(t0)
+    80002928:	4305                	li	t1,1
+    8000292a:	0062b423          	sd	t1,8(t0)
+    8000292e:	00000317          	auipc	t1,0x0
+    80002932:	71230313          	addi	t1,t1,1810 # 80003040 <full_reg_dump_prefix_with_fp>
+    80002936:	0062b823          	sd	t1,16(t0)
+    8000293a:	4321                	li	t1,8
+    8000293c:	0062bc23          	sd	t1,24(t0)
+    80002940:	0ff0000f          	fence
+    80002944:	ffffd317          	auipc	t1,0xffffd
+    80002948:	6bc30313          	addi	t1,t1,1724 # 80000000 <tohost>
+    8000294c:	00533023          	sd	t0,0(t1)
+
+0000000080002950 <wait_htif_print_15>:
+    80002950:	ffffd397          	auipc	t2,0xffffd
+    80002954:	6b838393          	addi	t2,t2,1720 # 80000008 <fromhost>
+    80002958:	0003be03          	ld	t3,0(t2)
+    8000295c:	fe0e0ae3          	beqz	t3,80002950 <wait_htif_print_15>
+    80002960:	0003b023          	sd	zero,0(t2)
+    80002964:	0ff0000f          	fence
+    80002968:	00000297          	auipc	t0,0x0
+    8000296c:	69828293          	addi	t0,t0,1688 # 80003000 <htif_communication_buffer>
+    80002970:	04000313          	li	t1,64
+    80002974:	0062b023          	sd	t1,0(t0)
+    80002978:	4305                	li	t1,1
+    8000297a:	0062b423          	sd	t1,8(t0)
+    8000297e:	00001317          	auipc	t1,0x1
+    80002982:	68230313          	addi	t1,t1,1666 # 80004000 <register_dump_buffer>
+    80002986:	0062b823          	sd	t1,16(t0)
+    8000298a:	29800313          	li	t1,664
+    8000298e:	0062bc23          	sd	t1,24(t0)
+    80002992:	0ff0000f          	fence
+    80002996:	ffffd317          	auipc	t1,0xffffd
+    8000299a:	66a30313          	addi	t1,t1,1642 # 80000000 <tohost>
+    8000299e:	00533023          	sd	t0,0(t1)
+
+00000000800029a2 <wait_htif_print_16>:
+    800029a2:	ffffd397          	auipc	t2,0xffffd
+    800029a6:	66638393          	addi	t2,t2,1638 # 80000008 <fromhost>
+    800029aa:	0003be03          	ld	t3,0(t2)
+    800029ae:	fe0e0ae3          	beqz	t3,800029a2 <wait_htif_print_16>
+    800029b2:	0003b023          	sd	zero,0(t2)
+    800029b6:	0ff0000f          	fence
+    800029ba:	34001073          	csrw	mscratch,zero
+    800029be:	340f9073          	csrw	mscratch,t6
+    800029c2:	00002f97          	auipc	t6,0x2
+    800029c6:	a86f8f93          	addi	t6,t6,-1402 # 80004448 <framework_temp_save_area>
+    800029ca:	000fb283          	ld	t0,0(t6)
+    800029ce:	008fb303          	ld	t1,8(t6)
+    800029d2:	010fb383          	ld	t2,16(t6)
+    800029d6:	018fbe03          	ld	t3,24(t6)
+    800029da:	020fbe83          	ld	t4,32(t6)
+    800029de:	028fbf03          	ld	t5,40(t6)
+    800029e2:	030fbf83          	ld	t6,48(t6)
+    800029e6:	34002ff3          	csrr	t6,mscratch
+
+00000000800029ea <_exit>:
+    # spike: x20(s4)=0x0 
+    # rocket: x20(s4)=0xDEADBEEF (异常阻止指令执行，保持设置的测试值)
+_exit:
+    EXIT_SIM
+    800029ea:	4285                	li	t0,1
+    800029ec:	ffffd317          	auipc	t1,0xffffd
+    800029f0:	61430313          	addi	t1,t1,1556 # 80000000 <tohost>
+    800029f4:	00533023          	sd	t0,0(t1)
+
+00000000800029f8 <infinite_exit_loop_18>:
+    800029f8:	a001                	j	800029f8 <infinite_exit_loop_18>

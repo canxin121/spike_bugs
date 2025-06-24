@@ -1,0 +1,607 @@
+{
+  "emulator_type": "Spike",
+  "raw_data_length": 1744,
+  "output_items": [
+    {
+      "MagicMarker": {
+        "marker": 12840893026304,
+        "marker_type": "ExceptionCSR",
+        "position": 0
+      }
+    },
+    {
+      "ExceptionData": {
+        "csrs": {
+          "mstatus": 9223372079804479488,
+          "mcause": 5,
+          "mepc": 2147492936,
+          "mtval": 32,
+          "mie": 0,
+          "mip": 128,
+          "mtvec": 2147491840,
+          "mscratch": 0,
+          "mhartid": 0
+        },
+        "position": 0
+      }
+    },
+    {
+      "MagicMarker": {
+        "marker": 12840893026304,
+        "marker_type": "ExceptionCSR",
+        "position": 80
+      }
+    },
+    {
+      "ExceptionData": {
+        "csrs": {
+          "mstatus": 9223372079804479488,
+          "mcause": 5,
+          "mepc": 2147492938,
+          "mtval": 12,
+          "mie": 0,
+          "mip": 128,
+          "mtvec": 2147491840,
+          "mscratch": 0,
+          "mhartid": 0
+        },
+        "position": 80
+      }
+    },
+    {
+      "MagicMarker": {
+        "marker": 12840893026304,
+        "marker_type": "ExceptionCSR",
+        "position": 160
+      }
+    },
+    {
+      "ExceptionData": {
+        "csrs": {
+          "mstatus": 9223372079804479488,
+          "mcause": 7,
+          "mepc": 2147492940,
+          "mtval": 28,
+          "mie": 0,
+          "mip": 128,
+          "mtvec": 2147491840,
+          "mscratch": 0,
+          "mhartid": 0
+        },
+        "position": 160
+      }
+    },
+    {
+      "MagicMarker": {
+        "marker": 12840893026304,
+        "marker_type": "ExceptionCSR",
+        "position": 240
+      }
+    },
+    {
+      "ExceptionData": {
+        "csrs": {
+          "mstatus": 9223372079804479488,
+          "mcause": 7,
+          "mepc": 2147492942,
+          "mtval": 0,
+          "mie": 0,
+          "mip": 128,
+          "mtvec": 2147491840,
+          "mscratch": 0,
+          "mhartid": 0
+        },
+        "position": 240
+      }
+    },
+    {
+      "MagicMarker": {
+        "marker": 12840893026304,
+        "marker_type": "ExceptionCSR",
+        "position": 320
+      }
+    },
+    {
+      "ExceptionData": {
+        "csrs": {
+          "mstatus": 9223372079804479488,
+          "mcause": 7,
+          "mepc": 2147492960,
+          "mtval": 7768,
+          "mie": 0,
+          "mip": 128,
+          "mtvec": 2147491840,
+          "mscratch": 0,
+          "mhartid": 0
+        },
+        "position": 320
+      }
+    },
+    {
+      "MagicMarker": {
+        "marker": 280297096482816,
+        "marker_type": "RegistersIntAndFloat",
+        "position": 400
+      }
+    },
+    {
+      "RegisterData": {
+        "marker_type": "RegistersIntAndFloat",
+        "registers": [
+          0,
+          0,
+          7720,
+          0,
+          0,
+          0,
+          305419896,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          9223372079804473472,
+          9223372036856091055,
+          0,
+          5188,
+          0,
+          2147491840,
+          0,
+          0,
+          2147492962,
+          0,
+          0,
+          128,
+          50380,
+          50381,
+          0,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "position": 400
+      }
+    },
+    {
+      "MagicMarker": {
+        "marker": 280297096482816,
+        "marker_type": "RegistersIntAndFloat",
+        "position": 1072
+      }
+    },
+    {
+      "RegisterData": {
+        "marker_type": "RegistersIntAndFloat",
+        "registers": [
+          0,
+          0,
+          7720,
+          0,
+          0,
+          0,
+          305419896,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2147500032,
+          2147500032,
+          9223372079804473472,
+          9223372036856091055,
+          0,
+          5188,
+          0,
+          2147491840,
+          0,
+          2147500032,
+          2147492962,
+          0,
+          0,
+          128,
+          60374,
+          60375,
+          0,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "position": 1072
+      }
+    }
+  ],
+  "register_dumps": [
+    {
+      "dump_type": "RegistersIntAndFloat",
+      "int_registers": [
+        0,
+        0,
+        7720,
+        0,
+        0,
+        0,
+        305419896,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "core_csrs": {
+        "mstatus": 9223372079804473472,
+        "misa": 9223372036856091055,
+        "medeleg": 0,
+        "mideleg": 5188,
+        "mie": 0,
+        "mtvec": 2147491840,
+        "mcounteren": 0,
+        "mscratch": 0,
+        "mepc": 2147492962,
+        "mcause": 0,
+        "mtval": 0,
+        "mip": 128,
+        "mcycle": 50380,
+        "minstret": 50381,
+        "mvendorid": 0,
+        "marchid": 5,
+        "mimpid": 0,
+        "mhartid": 0
+      },
+      "float_registers": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "float_csr": 0,
+      "position": 400
+    },
+    {
+      "dump_type": "RegistersIntAndFloat",
+      "int_registers": [
+        0,
+        0,
+        7720,
+        0,
+        0,
+        0,
+        305419896,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2147500032,
+        2147500032
+      ],
+      "core_csrs": {
+        "mstatus": 9223372079804473472,
+        "misa": 9223372036856091055,
+        "medeleg": 0,
+        "mideleg": 5188,
+        "mie": 0,
+        "mtvec": 2147491840,
+        "mcounteren": 0,
+        "mscratch": 2147500032,
+        "mepc": 2147492962,
+        "mcause": 0,
+        "mtval": 0,
+        "mip": 128,
+        "mcycle": 60374,
+        "minstret": 60375,
+        "mvendorid": 0,
+        "marchid": 5,
+        "mimpid": 0,
+        "mhartid": 0
+      },
+      "float_registers": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "float_csr": 0,
+      "position": 1072
+    }
+  ],
+  "exception_dumps": [
+    {
+      "csrs": {
+        "mstatus": 9223372079804479488,
+        "mcause": 5,
+        "mepc": 2147492936,
+        "mtval": 32,
+        "mie": 0,
+        "mip": 128,
+        "mtvec": 2147491840,
+        "mscratch": 0,
+        "mhartid": 0
+      },
+      "position": 0,
+      "inst_trace": {
+        "pc": 2147492936,
+        "disassembly": "lw s5,32(sp)",
+        "machine_code": "5a82",
+        "original_instruction": "lw s5,32(sp)"
+      }
+    },
+    {
+      "csrs": {
+        "mstatus": 9223372079804479488,
+        "mcause": 5,
+        "mepc": 2147492938,
+        "mtval": 12,
+        "mie": 0,
+        "mip": 128,
+        "mtvec": 2147491840,
+        "mscratch": 0,
+        "mhartid": 0
+      },
+      "position": 80,
+      "inst_trace": {
+        "pc": 2147492938,
+        "disassembly": "lw t0,12(sp)",
+        "machine_code": "42b2",
+        "original_instruction": "lw t0,12(sp)"
+      }
+    },
+    {
+      "csrs": {
+        "mstatus": 9223372079804479488,
+        "mcause": 7,
+        "mepc": 2147492940,
+        "mtval": 28,
+        "mie": 0,
+        "mip": 128,
+        "mtvec": 2147491840,
+        "mscratch": 0,
+        "mhartid": 0
+      },
+      "position": 160,
+      "inst_trace": {
+        "pc": 2147492940,
+        "disassembly": "sw a4,28(sp)",
+        "machine_code": "ce3a",
+        "original_instruction": "sw a4,28(sp)"
+      }
+    },
+    {
+      "csrs": {
+        "mstatus": 9223372079804479488,
+        "mcause": 7,
+        "mepc": 2147492942,
+        "mtval": 0,
+        "mie": 0,
+        "mip": 128,
+        "mtvec": 2147491840,
+        "mscratch": 0,
+        "mhartid": 0
+      },
+      "position": 240,
+      "inst_trace": {
+        "pc": 2147492942,
+        "disassembly": "sd s3,0(sp)",
+        "machine_code": "e04e",
+        "original_instruction": "sd s3,0(sp)"
+      }
+    },
+    {
+      "csrs": {
+        "mstatus": 9223372079804479488,
+        "mcause": 7,
+        "mepc": 2147492960,
+        "mtval": 7768,
+        "mie": 0,
+        "mip": 128,
+        "mtvec": 2147491840,
+        "mscratch": 0,
+        "mhartid": 0
+      },
+      "position": 320,
+      "inst_trace": {
+        "pc": 2147492960,
+        "disassembly": "sw t1,48(sp)",
+        "machine_code": "d81a",
+        "original_instruction": "sw t1,48(sp)"
+      }
+    }
+  ]
+}
