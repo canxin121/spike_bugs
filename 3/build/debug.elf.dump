@@ -1,0 +1,91 @@
+
+./build/debug.elf:     file format elf64-littleriscv
+
+
+Disassembly of section .text:
+
+0000000080002000 <exception_handler>:
+# ============================================================================
+# Exception Handler
+# ============================================================================
+exception_handler:
+    # Get exception instruction address
+    csrr t0, mepc
+    80002000:	341022f3          	csrr	t0,mepc
+    
+    # Read exception instruction content to determine length
+    lhu t1, 0(t0)
+    80002004:	0002d303          	lhu	t1,0(t0)
+    andi t2, t1, 0x3
+    80002008:	00337393          	andi	t2,t1,3
+    li t3, 0x3
+    8000200c:	00300e13          	li	t3,3
+    bne t2, t3, compressed_inst
+    80002010:	01c39663          	bne	t2,t3,8000201c <compressed_inst>
+    
+    # Standard instruction (4 bytes)
+    addi t0, t0, 4
+    80002014:	00428293          	addi	t0,t0,4
+    j update_mepc
+    80002018:	0080006f          	j	80002020 <update_mepc>
+
+000000008000201c <compressed_inst>:
+    
+compressed_inst:
+    # Compressed instruction (2 bytes)
+    addi t0, t0, 2
+    8000201c:	00228293          	addi	t0,t0,2
+
+0000000080002020 <update_mepc>:
+    
+update_mepc:
+    csrw mepc, t0
+    80002020:	34129073          	csrw	mepc,t0
+    csrwi mcause, 0
+    80002024:	34205073          	csrwi	mcause,0
+    csrwi mtval, 0
+    80002028:	34305073          	csrwi	mtval,0
+    csrwi mip, 0
+    8000202c:	34405073          	csrwi	mip,0
+
+    mret
+    80002030:	30200073          	mret
+
+0000000080002034 <_start>:
+
+# ============================================================================
+# Program Entry and Execution
+# ============================================================================
+_start:
+    la t0, exception_handler
+    80002034:	00000297          	auipc	t0,0x0
+    80002038:	fcc28293          	addi	t0,t0,-52 # 80002000 <exception_handler>
+    csrw mtvec, t0
+    8000203c:	30529073          	csrw	mtvec,t0
+
+    ctzw x14, x1
+    80002040:	6010971b          	ctzw	a4,ra
+    sh2add.uw x30, x14, x21
+    80002044:	21574f3b          	sh2add.uw	t5,a4,s5
+    slli.uw x17, x30, 32
+    80002048:	0a0f189b          	slli.uw	a7,t5,0x20
+    min x30, x3, x19
+    8000204c:	0b31cf33          	min	t5,gp,s3
+    bseti x30, x30, 31
+    80002050:	29ff1f13          	bseti	t5,t5,0x1f
+    amoadd.d x14, x17, (x30)
+    80002054:	011f372f          	amoadd.d	a4,a7,(t5)
+    lhu x17, 545(x15)
+    80002058:	2217d883          	lhu	a7,545(a5)
+
+000000008000205c <_exit>:
+
+_exit:
+    EXIT_SIM
+    8000205c:	00100293          	li	t0,1
+    80002060:	ffffe317          	auipc	t1,0xffffe
+    80002064:	fa030313          	addi	t1,t1,-96 # 80000000 <tohost>
+    80002068:	00533023          	sd	t0,0(t1)
+
+000000008000206c <infinite_exit_loop_0>:
+    8000206c:	0000006f          	j	8000206c <infinite_exit_loop_0>

@@ -1,5 +1,9 @@
 # Spike Bug Report
 
+## Conclusion
+
+Not a bug.
+
 ## Reproduction Environment
 - **Spike commit**: 70687ccf41bb2696c55c6f6aa44b3949f2921ddf
 - **march**: rv64imafdqc_h_zaamo_zba_zbb_zbc_zbs_zfa_zfh_zfhmin_zicond_zicsr_zifencei

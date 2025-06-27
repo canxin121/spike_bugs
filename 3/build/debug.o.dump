@@ -1,0 +1,91 @@
+
+./build/debug.o:     file format elf64-littleriscv
+
+
+Disassembly of section .text:
+
+0000000000000000 <exception_handler>:
+# ============================================================================
+# Exception Handler
+# ============================================================================
+exception_handler:
+    # Get exception instruction address
+    csrr t0, mepc
+   0:	341022f3          	csrr	t0,mepc
+    
+    # Read exception instruction content to determine length
+    lhu t1, 0(t0)
+   4:	0002d303          	lhu	t1,0(t0)
+    andi t2, t1, 0x3
+   8:	00337393          	andi	t2,t1,3
+    li t3, 0x3
+   c:	00300e13          	li	t3,3
+    bne t2, t3, compressed_inst
+  10:	01c39663          	bne	t2,t3,1c <compressed_inst>
+    
+    # Standard instruction (4 bytes)
+    addi t0, t0, 4
+  14:	00428293          	addi	t0,t0,4
+    j update_mepc
+  18:	0080006f          	j	20 <update_mepc>
+
+000000000000001c <compressed_inst>:
+    
+compressed_inst:
+    # Compressed instruction (2 bytes)
+    addi t0, t0, 2
+  1c:	00228293          	addi	t0,t0,2
+
+0000000000000020 <update_mepc>:
+    
+update_mepc:
+    csrw mepc, t0
+  20:	34129073          	csrw	mepc,t0
+    csrwi mcause, 0
+  24:	34205073          	csrwi	mcause,0
+    csrwi mtval, 0
+  28:	34305073          	csrwi	mtval,0
+    csrwi mip, 0
+  2c:	34405073          	csrwi	mip,0
+
+    mret
+  30:	30200073          	mret
+
+0000000000000034 <_start>:
+
+# ============================================================================
+# Program Entry and Execution
+# ============================================================================
+_start:
+    la t0, exception_handler
+  34:	00000297          	auipc	t0,0x0
+  38:	00028293          	mv	t0,t0
+    csrw mtvec, t0
+  3c:	30529073          	csrw	mtvec,t0
+
+    ctzw x14, x1
+  40:	6010971b          	ctzw	a4,ra
+    sh2add.uw x30, x14, x21
+  44:	21574f3b          	sh2add.uw	t5,a4,s5
+    slli.uw x17, x30, 32
+  48:	0a0f189b          	slli.uw	a7,t5,0x20
+    min x30, x3, x19
+  4c:	0b31cf33          	min	t5,gp,s3
+    bseti x30, x30, 31
+  50:	29ff1f13          	bseti	t5,t5,0x1f
+    amoadd.d x14, x17, (x30)
+  54:	011f372f          	amoadd.d	a4,a7,(t5)
+    lhu x17, 545(x15)
+  58:	2217d883          	lhu	a7,545(a5)
+
+000000000000005c <_exit>:
+
+_exit:
+    EXIT_SIM
+  5c:	00100293          	li	t0,1
+  60:	00000317          	auipc	t1,0x0
+  64:	00030313          	mv	t1,t1
+  68:	00533023          	sd	t0,0(t1) # 60 <_exit+0x4>
+
+000000000000006c <infinite_exit_loop_0>:
+  6c:	0000006f          	j	6c <infinite_exit_loop_0>
